@@ -1,0 +1,346 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>eye module &#8212; eye_draw  ドキュメント</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="next" title="eyes module" href="eyes.html" />
+    <link rel="prev" title="Welcome to src’s documentation!" href="index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="eyes.html" title="eyes module"
+             accesskey="N">次へ</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to src’s documentation!"
+             accesskey="P">前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">eye_draw  ドキュメント</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">目次</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">eye module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eyes.html">eyes module</a></li>
+</ul>
+
+  <h4>前のトピックへ</h4>
+  <p class="topless"><a href="index.html"
+                        title="前の章へ">Welcome to src’s documentation!</a></p>
+  <h4>次のトピックへ</h4>
+  <p class="topless"><a href="eyes.html"
+                        title="次の章へ">eyes module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-eye">
+<span id="eye-module"></span><h1>eye module<a class="headerlink" href="#module-eye" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<dl class="class">
+<dt id="eye.Eye">
+<em class="property">class </em><code class="descclassname">eye.</code><code class="descname">Eye</code><a class="reference internal" href="_modules/eye.html#Eye"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eye.Eye" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>片目描画クラス</p>
+<p>【責務】
+・指示される寸法に従い、目の各部品を描画する</p>
+<dl class="method">
+<dt id="eye.Eye._Eye__calc_eyelid">
+<code class="descname">_Eye__calc_eyelid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#eye.Eye._Eye__calc_eyelid" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>まぶた描画用変数を算出する</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__black_eye_lt_vec">
+<code class="descname">__black_eye_lt_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__black_eye_lt_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>黒目左上ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__black_eye_rb_vec">
+<code class="descname">__black_eye_rb_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__black_eye_rb_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>黒目右下ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__black_eye_size">
+<code class="descname">__black_eye_size</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__black_eye_size" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>黒目直径</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__black_eye_vec">
+<code class="descname">__black_eye_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__black_eye_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>黒目中心ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__lower_eyelid_lb_vec">
+<code class="descname">__lower_eyelid_lb_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__lower_eyelid_lb_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた左下ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__lower_eyelid_lt_vec">
+<code class="descname">__lower_eyelid_lt_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__lower_eyelid_lt_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた左上ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__lower_eyelid_rate_l">
+<code class="descname">__lower_eyelid_rate_l</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__lower_eyelid_rate_l" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた高さ比率左</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__lower_eyelid_rate_r">
+<code class="descname">__lower_eyelid_rate_r</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__lower_eyelid_rate_r" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた高さ比率右</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__lower_eyelid_rb_vec">
+<code class="descname">__lower_eyelid_rb_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__lower_eyelid_rb_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた右下ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__lower_eyelid_rt_vec">
+<code class="descname">__lower_eyelid_rt_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__lower_eyelid_rt_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた右上ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__need_lower_eyelid_draw">
+<code class="descname">__need_lower_eyelid_draw</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__need_lower_eyelid_draw" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>下まぶた描画必要有無</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__need_upper_eyelid_draw">
+<code class="descname">__need_upper_eyelid_draw</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__need_upper_eyelid_draw" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた描画必要有無</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__upper_eyelid_lb_vec">
+<code class="descname">__upper_eyelid_lb_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__upper_eyelid_lb_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた左下ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__upper_eyelid_lt_vec">
+<code class="descname">__upper_eyelid_lt_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__upper_eyelid_lt_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた左上ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__upper_eyelid_rate_l">
+<code class="descname">__upper_eyelid_rate_l</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__upper_eyelid_rate_l" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた高さ比率左</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__upper_eyelid_rate_r">
+<code class="descname">__upper_eyelid_rate_r</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__upper_eyelid_rate_r" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた高さ比率右</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__upper_eyelid_rb_vec">
+<code class="descname">__upper_eyelid_rb_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__upper_eyelid_rb_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた右下ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__upper_eyelid_rt_vec">
+<code class="descname">__upper_eyelid_rt_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__upper_eyelid_rt_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>上まぶた右上ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__white_eye_lt_vec">
+<code class="descname">__white_eye_lt_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__white_eye_lt_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>白目左上ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__white_eye_rb_vec">
+<code class="descname">__white_eye_rb_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__white_eye_rb_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>白目右下ベクトル</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__white_eye_size_h">
+<code class="descname">__white_eye_size_h</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__white_eye_size_h" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>白目高さ</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__white_eye_size_w">
+<code class="descname">__white_eye_size_w</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__white_eye_size_w" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>白目幅</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="eye.Eye.__white_eye_vec">
+<code class="descname">__white_eye_vec</code><em class="property"> = None</em><a class="headerlink" href="#eye.Eye.__white_eye_vec" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>白目中心ベクトル</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eye.Eye.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>draw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.draw"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eye.Eye.draw" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>全パーツを描画する</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><strong>draw</strong> (<em>ImageDraw</em>) – Drawオブジェクト</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="eye.Eye.set_black_eye">
+<code class="descname">set_black_eye</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.set_black_eye"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eye.Eye.set_black_eye" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>黒目パラメータを設定する</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) – 黒目中心x座標（白目中心からの相対座標）</li>
+<li><strong>y</strong> (<em>int</em>) – 黒目中心y座標（白目中心からの相対座標）</li>
+<li><strong>size</strong> (<em>int</em>) – 直径[pix]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="eye.Eye.set_eyelid">
+<code class="descname">set_eyelid</code><span class="sig-paren">(</span><em>upper_rate_l</em>, <em>upper_rate_r</em>, <em>lower_rate_l</em>, <em>lower_rate_r</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.set_eyelid"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eye.Eye.set_eyelid" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>まぶたパラメータを設定する</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>upper_rate_l</strong> (<em>float</em>) – 上まぶた高さ比率左</li>
+<li><strong>upper_rate_r</strong> (<em>float</em>) – 上まぶた高さ比率右</li>
+<li><strong>lower_rate_l</strong> (<em>float</em>) – 下まぶた高さ比率左</li>
+<li><strong>lower_rate_r</strong> (<em>float</em>) – 下まぶた高さ比率右</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="eye.Eye.set_white_eye">
+<code class="descname">set_white_eye</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>size_w</em>, <em>size_h</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eye.html#Eye.set_white_eye"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eye.Eye.set_white_eye" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>白目パラメータを設定する</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>int</em>) – 白目中心x座標</li>
+<li><strong>y</strong> (<em>int</em>) – 白目中心y座標</li>
+<li><strong>size_w</strong> (<em>int</em>) – 幅[pix]</li>
+<li><strong>size_h</strong> (<em>int</em>) – 高さ[pix]</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="eyes.html" title="eyes module"
+             >次へ</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to src’s documentation!"
+             >前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">eye_draw  ドキュメント</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Author.
+      このドキュメントは <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6 で生成しました。
+    </div>
+  </body>
+</html>
