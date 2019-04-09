@@ -1,0 +1,171 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>eyes module &#8212; eye_draw  ドキュメント</title>
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <link rel="prev" title="eye module" href="eye.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="eye.html" title="eye module"
+             accesskey="P">前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">eye_draw  ドキュメント</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">目次</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="eye.html">eye module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">eyes module</a></li>
+</ul>
+
+  <h4>前のトピックへ</h4>
+  <p class="topless"><a href="eye.html"
+                        title="前の章へ">eye module</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-eyes">
+<span id="eyes-module"></span><h1>eyes module<a class="headerlink" href="#module-eyes" title="このヘッドラインへのパーマリンク">¶</a></h1>
+<dl class="class">
+<dt id="eyes.Eyes">
+<em class="property">class </em><code class="descclassname">eyes.</code><code class="descname">Eyes</code><a class="reference internal" href="_modules/eyes.html#Eyes"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eyes.Eyes" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>両目描画クラス</p>
+<p>【責務】
+・両目を描画する</p>
+<dl class="method">
+<dt id="eyes.Eyes.set_anger">
+<code class="descname">set_anger</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eyes.html#Eyes.set_anger"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eyes.Eyes.set_anger" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>怒った目を描画</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><strong>level</strong> (<em>int</em>) – 怒りのレベル（1～10）</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="eyes.Eyes.set_black_eyes">
+<code class="descname">set_black_eyes</code><span class="sig-paren">(</span><em>dir_vec</em>, <em>rate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eyes.html#Eyes.set_black_eyes"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eyes.Eyes.set_black_eyes" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>目を動かす</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dir_vec</strong> (<em>vector</em>) – 方向単位ベクトル</li>
+<li><strong>rate</strong> (<em>float</em>) – 比率</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="eyes.Eyes.set_nomal">
+<code class="descname">set_nomal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eyes.html#Eyes.set_nomal"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eyes.Eyes.set_nomal" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>通常の目を描画</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eyes.Eyes.set_surprized">
+<code class="descname">set_surprized</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eyes.html#Eyes.set_surprized"><span class="viewcode-link">[ソース]</span></a><a class="headerlink" href="#eyes.Eyes.set_surprized" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>驚いた目を描画</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">パラメータ:</th><td class="field-body"><strong>level</strong> (<em>int</em>) – 驚きのレベル（1～5）</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="right" >
+          <a href="eye.html" title="eye module"
+             >前へ</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">eye_draw  ドキュメント</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Author.
+      このドキュメントは <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6 で生成しました。
+    </div>
+  </body>
+</html>

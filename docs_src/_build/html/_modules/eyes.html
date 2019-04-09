@@ -1,0 +1,255 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>eyes &#8212; eye_draw  ドキュメント</title>
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">eye_draw  ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">モジュールコード</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">目次</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../eye.html">eye module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eyes.html">eyes module</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>eyes のソースコード</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="c1"># import math</span>
+<span class="c1"># import time</span>
+
+<span class="kn">import</span> <span class="nn">Adafruit_GPIO.SPI</span> <span class="k">as</span> <span class="nn">SPI</span>
+<span class="kn">import</span> <span class="nn">Adafruit_SSD1306</span>
+
+<span class="c1"># Pillow(PIL)はPythonの画像処理ライブラリ。OpenCVのような複雑処理はできないが、シンプルで使いやすい。</span>
+<span class="c1"># Pillowは開発が停止しているPIL(Python Image Library)からフォークされたライブラリ。</span>
+<span class="c1"># pillow か PIL のどちらか一方のみがインストールされた環境でないと使えない。</span>
+<span class="c1"># import する場合はどちらも from PIL となるようなので要注意。</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="c1"># from PIL import ImageFont</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageDraw</span>
+
+<span class="kn">from</span> <span class="nn">eye</span> <span class="k">import</span> <span class="n">Eye</span>
+
+<div class="viewcode-block" id="Eyes"><a class="viewcode-back" href="../eyes.html#eyes.Eyes">[ドキュメント]</a><span class="k">class</span> <span class="nc">Eyes</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    両目描画クラス</span>
+
+<span class="sd">    【責務】</span>
+<span class="sd">    ・両目を描画する</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        コンストラクタが呼ばれた後に呼ばれるメソッド</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Raspberry Pi pin configuration:</span>
+        <span class="n">RST</span> <span class="o">=</span> <span class="mi">24</span>
+
+        <span class="c1"># 128x64 display with hardware I2C:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span> <span class="o">=</span> <span class="n">Adafruit_SSD1306</span><span class="o">.</span><span class="n">SSD1306_128_64</span><span class="p">(</span><span class="n">rst</span><span class="o">=</span><span class="n">RST</span><span class="p">)</span>
+
+        <span class="c1"># Initialize library.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+
+        <span class="c1"># Get display width and height.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">height</span>
+
+        <span class="c1"># Clear display.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+        <span class="c1"># Create image buffer.</span>
+        <span class="c1"># Make sure to create image with mode &#39;1&#39; for 1-bit color.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height</span><span class="p">))</span>
+
+        <span class="c1"># Create drawing object.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__image</span><span class="p">)</span>
+        <span class="c1"># Clear image buffer by drawing a black filled box.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height</span><span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Draw the image buffer.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+        <span class="c1"># 左右の目のインスタンスを作成</span>
+        <span class="c1"># ここでの左右はディスプレイとしての左右であり、顔としての左右とは逆である</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span> <span class="o">=</span> <span class="n">Eye</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span> <span class="o">=</span> <span class="n">Eye</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_nomal</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Eyes.set_nomal"><a class="viewcode-back" href="../eyes.html#eyes.Eyes.set_nomal">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_nomal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        通常の目を描画</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">set_white_eye</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">set_black_eye</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">set_eyelid</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">set_white_eye</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">set_black_eye</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">set_eyelid</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Eyes.set_anger"><a class="viewcode-back" href="../eyes.html#eyes.Eyes.set_anger">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_anger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        怒った目を描画</span>
+
+<span class="sd">        :param int level: 怒りのレベル（1～10）</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">level</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">level</span><span class="o">&gt;</span><span class="mi">10</span><span class="p">:</span> <span class="n">level</span><span class="o">=</span><span class="mi">10</span>
+
+        <span class="n">rate_out</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">level</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">rate_in</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">level</span><span class="o">/</span><span class="mi">3</span>
+
+        <span class="c1"># 描画領域クリア</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height</span><span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">set_eyelid</span><span class="p">(</span><span class="n">rate_out</span><span class="p">,</span><span class="n">rate_in</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">set_eyelid</span><span class="p">(</span><span class="n">rate_in</span><span class="p">,</span><span class="n">rate_out</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Eyes.set_surprized"><a class="viewcode-back" href="../eyes.html#eyes.Eyes.set_surprized">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_surprized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        驚いた目を描画</span>
+
+<span class="sd">        :param int level: 驚きのレベル（1～5）</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">level</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">level</span><span class="o">&gt;</span><span class="mi">5</span><span class="p">:</span> <span class="n">level</span><span class="o">=</span><span class="mi">5</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">+</span> <span class="n">level</span><span class="o">*</span><span class="mi">3</span>
+
+        <span class="c1"># 描画領域クリア</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height</span><span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">set_white_eye</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">set_white_eye</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Eyes.set_black_eyes"><a class="viewcode-back" href="../eyes.html#eyes.Eyes.set_black_eyes">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_black_eyes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_vec</span><span class="p">,</span> <span class="n">rate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        目を動かす</span>
+
+<span class="sd">        :param vector dir_vec: 方向単位ベクトル</span>
+<span class="sd">        :param float rate: 比率</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">rate</span><span class="o">&lt;-</span><span class="mi">1</span><span class="p">:</span> <span class="n">rate</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">rate</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span> <span class="n">rate</span><span class="o">=</span><span class="mi">1</span>
+
+        <span class="c1"># 描画領域クリア</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="o">.</span><span class="n">rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__height</span><span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">set_black_eye</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_l</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">set_white_eye</span><span class="p">(</span><span class="mi">96</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__eye_r</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__draw</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__disp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">eye_draw  ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >モジュールコード</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Author.
+      このドキュメントは <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6 で生成しました。
+    </div>
+  </body>
+</html>

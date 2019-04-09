@@ -1,0 +1,273 @@
+
+
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>eye &#8212; eye_draw  ドキュメント</title>
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script type="text/javascript" src="../_static/bizstyle.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">eye_draw  ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">モジュールコード</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">目次</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../eye.html">eye module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eyes.html">eyes module</a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>クイック検索</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="検索" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>eye のソースコード</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: UTF-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageDraw</span>
+
+<div class="viewcode-block" id="Eye"><a class="viewcode-back" href="../eye.html#eye.Eye">[ドキュメント]</a><span class="k">class</span> <span class="nc">Eye</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    片目描画クラス</span>
+
+<span class="sd">    【責務】</span>
+<span class="sd">    ・指示される寸法に従い、目の各部品を描画する</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        コンストラクタが呼ばれた後に呼ばれるメソッド</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># --- 白目 ---</span>
+        <span class="c1">#: 白目中心ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 白目左上ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_lt_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 白目右下ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_rb_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 白目幅</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_w</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#: 白目高さ</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># --- 黒目 ---</span>
+        <span class="c1">#: 黒目中心ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 黒目左上ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_lt_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 黒目右下ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_rb_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 黒目直径</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_size</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># --- 上まぶた ---</span>
+        <span class="c1">#: 上まぶた高さ比率左</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rate_l</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1">#: 上まぶた高さ比率右</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rate_r</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1">#: 上まぶた左上ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lt_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 上まぶた左下ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lb_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 上まぶた右上ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rt_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 上まぶた右下ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rb_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 上まぶた描画必要有無</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__need_upper_eyelid_draw</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># --- 下まぶた ---</span>
+        <span class="c1">#: 下まぶた高さ比率左</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rate_l</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1">#: 下まぶた高さ比率右</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rate_r</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1">#: 下まぶた左上ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lt_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 下まぶた左下ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lb_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 下まぶた右上ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rt_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 下まぶた右下ベクトル</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rb_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="c1">#: 下まぶた描画必要有無</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__need_lower_eyelid_draw</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># まぶた描画用変数を算出する</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__calc_eyelid</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Eye.set_white_eye"><a class="viewcode-back" href="../eye.html#eye.Eye.set_white_eye">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_white_eye</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size_w</span><span class="p">,</span> <span class="n">size_h</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        白目パラメータを設定する</span>
+
+<span class="sd">        :param int x: 白目中心x座標</span>
+<span class="sd">        :param int y: 白目中心y座標</span>
+<span class="sd">        :param int size_w: 幅[pix]</span>
+<span class="sd">        :param int size_h: 高さ[pix]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_vec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_lt_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">size_w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">size_h</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_rb_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">size_w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">size_h</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_w</span> <span class="o">=</span> <span class="n">size_w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span> <span class="o">=</span> <span class="n">size_h</span>
+
+        <span class="c1"># まぶた描画用変数を算出する</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__calc_eyelid</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Eye.set_black_eye"><a class="viewcode-back" href="../eye.html#eye.Eye.set_black_eye">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_black_eye</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        黒目パラメータを設定する</span>
+
+<span class="sd">        :param int x: 黒目中心x座標（白目中心からの相対座標）</span>
+<span class="sd">        :param int y: 黒目中心y座標（白目中心からの相対座標）</span>
+<span class="sd">        :param int size: 直径[pix]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_lt_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_rb_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_size</span> <span class="o">=</span> <span class="n">size</span></div>
+
+<div class="viewcode-block" id="Eye.set_eyelid"><a class="viewcode-back" href="../eye.html#eye.Eye.set_eyelid">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_eyelid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">upper_rate_l</span><span class="p">,</span> <span class="n">upper_rate_r</span><span class="p">,</span> <span class="n">lower_rate_l</span><span class="p">,</span> <span class="n">lower_rate_r</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        まぶたパラメータを設定する</span>
+
+<span class="sd">        :param float upper_rate_l: 上まぶた高さ比率左</span>
+<span class="sd">        :param float upper_rate_r: 上まぶた高さ比率右</span>
+<span class="sd">        :param float lower_rate_l: 下まぶた高さ比率左</span>
+<span class="sd">        :param float lower_rate_r: 下まぶた高さ比率右</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rate_l</span> <span class="o">=</span> <span class="n">upper_rate_l</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rate_r</span> <span class="o">=</span> <span class="n">upper_rate_r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rate_l</span> <span class="o">=</span> <span class="n">lower_rate_l</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rate_r</span> <span class="o">=</span> <span class="n">lower_rate_r</span>
+
+        <span class="c1"># 左右とも0の場合は描画しない</span>
+        <span class="k">if</span> <span class="n">upper_rate_l</span><span class="o">==</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">upper_rate_r</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__need_upper_eyelid_draw</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__need_upper_eyelid_draw</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">lower_rate_l</span><span class="o">==</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">lower_rate_r</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__need_lower_eyelid_draw</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__need_lower_eyelid_draw</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># まぶた描画用変数を算出する</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__calc_eyelid</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">__calc_eyelid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        まぶた描画用変数を算出する</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lt_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_lt_vec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lb_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rate_l</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rt_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_w</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rb_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rate_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lt_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_lt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lb_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rate_l</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rt_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_w</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rb_vec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rt_vec</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_size_h</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rate_r</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Eye.draw"><a class="viewcode-back" href="../eye.html#eye.Eye.draw">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        全パーツを描画する</span>
+
+<span class="sd">        :param ImageDraw draw: Drawオブジェクト</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 白目</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_lt_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_lt_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_rb_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__white_eye_rb_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+        <span class="c1"># 黒目</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">ellipse</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_lt_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_lt_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_rb_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__black_eye_rb_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># 上まぶた</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__need_upper_eyelid_draw</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">((</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lt_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lt_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lb_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_lb_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rb_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rb_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rt_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__upper_eyelid_rt_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># 下まぶた</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__need_lower_eyelid_draw</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">polygon</span><span class="p">((</span>  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lt_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lt_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lb_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_lb_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rb_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rb_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rt_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__lower_eyelid_rt_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="p">),</span> <span class="n">outline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div></div>
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">eye_draw  ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >モジュールコード</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Author.
+      このドキュメントは <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6 で生成しました。
+    </div>
+  </body>
+</html>
